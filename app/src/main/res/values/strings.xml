@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">CinemaApp</string>
+    <string name="details">Детали</string>
+    <string name="hollywood_title">Однажды в Голливуде</string>
+    <string name="interstellar_title">Интерстеллар</string>
+    <string name="title">Film name</string>
+    <string name="back">Назад</string>
+    <string name="film_description">Описание фильма</string>
+    <string name="like">Нравится</string>
+    <string name="comment">Введите комментарий</string>
+    <string name="hint">Введите комментарий</string>
+    <string name="saveCommentButtonText">Сохранить</string>
 </resources>
