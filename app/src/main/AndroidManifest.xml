@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FilmDetailsActivity"></activity>
+        <activity
+            android:name=".activity.FilmDetailsActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".activity.AddFilmActivity"></activity>
     </application>
 
 </manifest>

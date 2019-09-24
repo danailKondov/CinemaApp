@@ -3,6 +3,7 @@ package ru.otus.cinemaapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.model.Film;
 import ru.otus.cinemaapp.repo.FilmRepository;
@@ -21,6 +22,8 @@ public class FilmDetailsActivity extends AppCompatActivity {
 
     public static final String LIKE = "like";
     public static final String COMMENT = "comment";
+    public static final String VIEW_TITLE = "title";
+    public static final String VIEW_COVER = "cover";
 
     private FilmRepositoryInt repository = FilmRepository.getInstance();
 
@@ -40,10 +43,16 @@ public class FilmDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ((TextView)findViewById(R.id.title_details)).setText(film.getTitle());
-        ((TextView)findViewById(R.id.film_description)).setText(film.getDescription());
-        ((ImageView)findViewById(R.id.film_image_details))
-                .setImageDrawable(ContextCompat.getDrawable(this, film.getImageResourceId()));
+        TextView title = findViewById(R.id.title_details);
+        title.setText(film.getTitle());
+        ViewCompat.setTransitionName(title, VIEW_TITLE);
+
+        TextView description = findViewById(R.id.film_description);
+        description.setText(film.getDescription());
+
+        ImageView cover = findViewById(R.id.film_image_details);
+        cover.setImageDrawable(ContextCompat.getDrawable(this, film.getImageResourceId()));
+        ViewCompat.setTransitionName(cover, VIEW_COVER);
 
         Button button = findViewById(R.id.saveCommentButton);
         button.setOnClickListener(view -> {

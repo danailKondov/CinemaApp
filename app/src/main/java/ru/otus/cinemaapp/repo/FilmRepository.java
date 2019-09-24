@@ -2,6 +2,7 @@ package ru.otus.cinemaapp.repo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import ru.otus.cinemaapp.R;
@@ -15,7 +16,7 @@ public class FilmRepository implements FilmRepositoryInt {
 
     private FilmRepository() {
         films.add(new Film(
-                0L,
+                Film.generateId(),
                 "Однажды в голливуде",
                 "Фильм повествует о череде событий, произошедших в Голливуде в 1969 году, " +
                         "на закате его «золотого века». Известный актер Рик Далтон и его дублер " +
@@ -23,7 +24,7 @@ public class FilmRepository implements FilmRepositoryInt {
                         "киноиндустрии.",
                 R.drawable.hollywood));
         films.add(new Film(
-                1L,
+                Film.generateId(),
                 "Интерстеллар",
                 "Когда засуха приводит человечество к продовольственному кризису, " +
                         "коллектив исследователей и учёных отправляется сквозь червоточину " +
@@ -33,7 +34,7 @@ public class FilmRepository implements FilmRepositoryInt {
                         "на другую планету.",
                 R.drawable.interstellar));
         films.add(new Film(
-                2L,
+                Film.generateId(),
                 "Щегол",
                 "История юного Теодора Деккера, потерявшего мать во время теракта в " +
                         "Метрополитен-музее. Чудом оставшись в живых после взрыва, Тео получает от " +
@@ -60,5 +61,11 @@ public class FilmRepository implements FilmRepositoryInt {
     @Override
     public List<Film> getFilmList() {
         return films;
+    }
+
+    @Override
+    public void saveFilm(Film film) {
+        Objects.nonNull(film);
+        films.add(film);
     }
 }

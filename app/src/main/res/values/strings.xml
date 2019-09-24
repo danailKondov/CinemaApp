@@ -9,5 +9,17 @@
     <string name="like">Нравится</string>
     <string name="comment">Введите комментарий</string>
     <string name="hint">Введите комментарий</string>
-    <string name="saveCommentButtonText">Сохранить</string>
+    <string name="save_comment_button_text">Сохранить</string>
+    <string name="contact_friend">Пригласить друга</string>
+    <string name="about_app">О приложении</string>
+    <string name="main_display">Главный экран</string>
+    <string name="nav_header_title">Cinematic</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="add_film">Добавить фильм</string>
+    <string name="titleHint">Название фильма</string>
+    <string name="descriptionHint">Описание</string>
+    <string name="add_film_button_text">Сохранить</string>
+    <string name="bottom_sheet_peek">Дополнительная информация</string>
+    <string name="bottom_sheet_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 </resources>
