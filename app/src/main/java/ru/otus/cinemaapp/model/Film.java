@@ -2,6 +2,8 @@ package ru.otus.cinemaapp.model;
 
 public class Film {
 
+    private static long counter;
+
     private Long id;
     private String title;
     private String description;
@@ -12,6 +14,10 @@ public class Film {
         this.title = title;
         this.description = description;
         this.imageResourceId = imageResourceId;
+    }
+
+    public static Long generateId() {
+        return counter++;
     }
 
     public Long getId() {

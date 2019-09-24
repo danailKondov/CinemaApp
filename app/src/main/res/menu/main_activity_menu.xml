@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/contactFriendOptionsItem"
+        android:icon="@drawable/ic_contact_action"
+        android:title="@string/contact_friend"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/addFilmOptionsItem"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="@string/add_film"
+        app:showAsAction="ifRoom"/>
+</menu>
