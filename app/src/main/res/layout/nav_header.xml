@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="@string/nav_header_title"
-        android:textSize="24sp"
+        android:textSize="@dimen/text_size"
         android:gravity="right"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
-        android:textColor="#ffffff" />
+        android:paddingRight="@dimen/text_padding"
+        android:paddingBottom="@dimen/text_padding"
+        android:textColor="@color/text_color" />
 </FrameLayout>

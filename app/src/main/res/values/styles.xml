@@ -10,4 +10,10 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="fab">
+        <item name="android:layout_marginRight">32dp</item>
+        <item name="android:layout_marginBottom">64dp</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:backgroundTint">@color/fabBackground</item>
+    </style>
 </resources>

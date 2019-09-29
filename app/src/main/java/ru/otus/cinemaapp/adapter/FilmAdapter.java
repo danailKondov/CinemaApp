@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.activity.MainActivity;
 import ru.otus.cinemaapp.model.Film;
@@ -77,11 +76,6 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             cover.setOnClickListener(view -> {
                 mainActivity.makeTransitionAnimation(title, cover, getAdapterPosition());
             });
-        }
-
-        @OnClick(R.id.film_image)
-        void onFilmImageClick() {
-            // start animation then mainActivity.detailsButtonClicked(position);
         }
     }
 }
