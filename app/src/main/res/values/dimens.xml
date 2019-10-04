@@ -1,4 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="standard_margin">16dp</dimen>
+    <dimen name="text_input_height">0dp</dimen>
+    <dimen name="margin_24_dp">24dp</dimen>
+    <dimen name="image_width">116dp</dimen>
+    <dimen name="image_height">169dp</dimen>
+    <dimen name="text_width">0dp</dimen>
+    <dimen name="checkbox_with">0dp</dimen>
+    <dimen name="low_margin">8dp</dimen>
+    <dimen name="button_bottom_margin">88dp</dimen>
+    <dimen name="text_height">0dp</dimen>
+    <dimen name="text_guide_begin">20dp</dimen>
+    <dimen name="collapsing_toolbar_height">350dp</dimen>
+    <dimen name="title_margin_end">64dp</dimen>
+    <dimen name="title_margin_start">48dp</dimen>
+    <dimen name="fab_image_size">42dp</dimen>
+    <dimen name="bottom_navigation_menu_height">56dp</dimen>
+    <dimen name="layout_height">340dp</dimen>
+    <dimen name="peek_height">80dp</dimen>
+    <dimen name="text_bottom_height">80dp</dimen>
+    <dimen name="dialog_padding">16dp</dimen>
+    <dimen name="item_image_width">116dp</dimen>
+    <dimen name="item_image_height">169dp</dimen>
+    <dimen name="text_padding">16dp</dimen>
+    <dimen name="text_size">24sp</dimen>
+    <dimen name="card_elevation">16dp</dimen>
+    <dimen name="caed_corner_radius">8dp</dimen>
+    <dimen name="land_card_width">350dp</dimen>
 </resources>

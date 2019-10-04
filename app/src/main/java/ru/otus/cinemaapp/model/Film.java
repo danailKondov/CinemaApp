@@ -8,6 +8,7 @@ public class Film {
     private String title;
     private String description;
     private int imageResourceId;
+    private boolean isLiked;
 
     public Film(Long id, String title, String description, int imageResourceId) {
         this.id = id;
@@ -50,5 +51,13 @@ public class Film {
 
     public void setImageResourceId(int imageResourceId) {
         this.imageResourceId = imageResourceId;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

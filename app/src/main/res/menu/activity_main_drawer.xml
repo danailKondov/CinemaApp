@@ -12,5 +12,10 @@
             android:id="@+id/mainDisplay"
             android:icon="@drawable/ic_star_border_black_24dp"
             android:title="@string/main_display" />
+
+        <item
+            android:id="@+id/drawer_exit"
+            android:icon="@drawable/ic_close_black_24dp"
+            android:title="@string/drawer_exit"/>
     </group>
 </menu>

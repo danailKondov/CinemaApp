@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.model.Film;
 import ru.otus.cinemaapp.repo.FilmRepository;
@@ -25,12 +27,16 @@ public class FilmDetailsActivity extends AppCompatActivity {
     public static final String VIEW_TITLE = "title";
     public static final String VIEW_COVER = "cover";
 
+    @BindView(R.id.likeCheckBox) CheckBox likeCheckBox;
+    @BindView(R.id.commentTextInput) EditText comment;
+
     private FilmRepositoryInt repository = FilmRepository.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_details);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         Long id = intent.getLongExtra(MainActivity.FILM_ID, -1L);
@@ -50,15 +56,19 @@ public class FilmDetailsActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.film_description);
         description.setText(film.getDescription());
 
+        likeCheckBox.setChecked(film.isLiked());
+
         ImageView cover = findViewById(R.id.film_image_details);
         cover.setImageDrawable(ContextCompat.getDrawable(this, film.getImageResourceId()));
         ViewCompat.setTransitionName(cover, VIEW_COVER);
 
         Button button = findViewById(R.id.saveCommentButton);
         button.setOnClickListener(view -> {
+            film.setLiked(likeCheckBox.isChecked());
+
             Intent responseIntent = new Intent();
-            responseIntent.putExtra(LIKE, ((CheckBox)findViewById(R.id.likeCheckBox)).isChecked());
-            responseIntent.putExtra(COMMENT, ((EditText)findViewById(R.id.commentTextInput)).getText().toString());
+            responseIntent.putExtra(LIKE, likeCheckBox.isChecked());
+            responseIntent.putExtra(COMMENT, comment.getText().toString());
             setResult(RESULT_OK, responseIntent);
             finish();
         });

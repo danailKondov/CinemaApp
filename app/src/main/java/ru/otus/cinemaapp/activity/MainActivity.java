@@ -5,17 +5,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,13 +31,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.adapter.FilmAdapter;
 import ru.otus.cinemaapp.model.Film;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String FILM_ID = "filmId";
     public static final String CHECKED_POSITION = "checkedPosition";
@@ -39,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
     private FilmRepositoryInt repository = FilmRepository.getInstance();
 
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.main_coordinator_layout) CoordinatorLayout coordLayout;
+    @BindView(R.id.navigationView) NavigationView navigationView;
 
     private int checkedPosition = -1;
-
     private FilmAdapter adapter;
 
     @Override
@@ -64,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new FilmAdapter(this, repository.getFilmList());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState != null) {
             checkedPosition = savedInstanceState.getInt(CHECKED_POSITION);
@@ -133,6 +143,17 @@ public class MainActivity extends AppCompatActivity {
                 isLiked = data.getBooleanExtra(FilmDetailsActivity.LIKE, false);
                 comment = data.getStringExtra(FilmDetailsActivity.COMMENT);
             }
+            Snackbar
+                    .make(
+                            coordLayout,
+                            isLiked ? getString(R.string.add_to_prefs) : getString(R.string.not_add_to_prefs),
+                            Snackbar.LENGTH_LONG
+                    )
+                    .setAction(getString(R.string.snackbar_back), view ->
+                            startFilmsDetailsActivity(checkedPosition, null)
+                    )
+                    .setActionTextColor(Color.CYAN)
+                    .show();
             Log.i("activityResult", "liked: " + isLiked + "; comment: " + comment);
         }
     }
@@ -173,5 +194,44 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(FILM_ID, film.getId());
 
         startActivityForResult(intent, REQUEST_FOR_COMMENT, bundle);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case (R.id.drawer_exit):
+                showExitDialog();
+                return true;
+        }
+        return true;
+    }
+
+    private void showExitDialog() {
+        new ExitDialog(this).show();
+    }
+
+    class ExitDialog extends Dialog {
+
+        public ExitDialog(@NonNull Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog);
+            ButterKnife.bind(this);
+        }
+
+        @OnClick(R.id.dialog_exit)
+        void onExitClick(View view) {
+            dismiss();
+            MainActivity.this.finish();
+        }
+
+        @OnClick(R.id.dialog_remain)
+        void onRemainClick(View view) {
+            dismiss();
+        }
     }
 }

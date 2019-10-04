@@ -25,23 +25,22 @@
 
         <ImageView
             android:id="@+id/film_image_details"
-            android:layout_width="116dp"
-            android:layout_height="169dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:adjustViewBounds="true"
             android:contentDescription="@string/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-
         <TextView
             android:id="@+id/title_details"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/text_width"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
             android:text="@string/title"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:gravity="top"
@@ -52,10 +51,10 @@
 
         <CheckBox
             android:id="@+id/likeCheckBox"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/checkbox_with"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:text="@string/like"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/film_image_details" />
@@ -64,9 +63,9 @@
             android:id="@+id/saveCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="88dp"
+            android:layout_marginStart="@dimen/low_margin"
+            android:layout_marginEnd="@dimen/low_margin"
+            android:layout_marginBottom="@dimen/button_bottom_margin"
             android:text="@string/save_comment_button_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,11 +75,11 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/commentTextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="@dimen/text_input_height"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:layout_marginBottom="@dimen/standard_margin"
             android:gravity="top"
             app:layout_constraintBottom_toTopOf="@+id/saveCommentButton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -102,12 +101,12 @@
 
         <TextView
             android:id="@+id/film_description"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:layout_marginBottom="@dimen/standard_margin"
             android:text="@string/film_description"
             app:layout_constraintBottom_toTopOf="@+id/commentTextInputLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
+            app:layout_constraintGuide_begin="@dimen/text_guide_begin" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/details_activity_bottom_sheet" />

@@ -22,4 +22,14 @@
     <string name="add_film_button_text">Сохранить</string>
     <string name="bottom_sheet_peek">Дополнительная информация</string>
     <string name="bottom_sheet_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="snackbar_back">Back</string>
+    <string name="drawer_exit">Выход</string>
+    <string name="exit_dialog_text">Вы хотите покинуть приложение?</string>
+    <string name="exit_yes">Да</string>
+    <string name="exit_no">Нет</string>
+    <string name="genre">Жанр</string>
+    <string name="producer">Режиссер</string>
+    <string name="actor">Актер</string>
+    <string name="add_to_prefs">Film added to preferences</string>
+    <string name="not_add_to_prefs">Film not added to preferences</string>
 </resources>

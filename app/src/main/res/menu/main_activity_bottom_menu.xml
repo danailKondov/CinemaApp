@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/genreBottomNavItem"
+        android:icon="@drawable/ic_genre_black_24dp"
+        android:title="@string/genre" />
+
+    <item
+        android:id="@+id/producerBottomNavItem"
+        android:icon="@drawable/ic_producer_black_24dp"
+        android:title="@string/producer" />
+
+    <item
+        android:id="@+id/actorBottomNavItem"
+        android:icon="@drawable/ic_actor_black_24dp"
+        android:title="@string/actor" />
+
+</menu>
