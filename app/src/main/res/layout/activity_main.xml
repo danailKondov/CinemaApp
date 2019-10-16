@@ -16,6 +16,7 @@
         tools:context=".activity.MainActivity">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -50,29 +51,11 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/contactFriendFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_contact_action"
-            android:scaleType="center"
-            app:maxImageSize="@dimen/fab_image_size"
-            app:fabSize="normal"
-            style="@style/fab"/>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bottom_navigation_menu_height"
-            android:layout_gravity="bottom"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/main_activity_bottom_menu" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

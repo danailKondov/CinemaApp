@@ -16,17 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
-import ru.otus.cinemaapp.activity.MainActivity;
+import ru.otus.cinemaapp.fragments.FilmListFragment;
 import ru.otus.cinemaapp.model.Film;
 
 public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Film> filmList;
     private int checkedPosition;
-    private MainActivity mainActivity;
+    private FilmListFragment fragment;
 
-    public FilmAdapter(MainActivity mainActivity, List<Film> filmList) {
-        this.mainActivity = mainActivity;
+    public FilmAdapter(FilmListFragment fragment, List<Film> filmList) {
+        this.fragment = fragment;
         this.filmList = filmList;
     }
 
@@ -43,7 +43,7 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Film film = filmList.get(position);
         FilmHolder filmHolder = (FilmHolder) holder;
         filmHolder.title.setText(film.getTitle());
-        filmHolder.cover.setImageDrawable(ContextCompat.getDrawable(mainActivity, film.getImageResourceId()));
+        filmHolder.cover.setImageDrawable(ContextCompat.getDrawable(fragment.getContext(), film.getImageResourceId()));
         if (position == checkedPosition) {
             filmHolder.button.setTextColor(Color.CYAN);
         } else {
@@ -71,10 +71,7 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ButterKnife.bind(this, itemView);
             button.setOnClickListener(view -> {
                 int position = getAdapterPosition();
-                mainActivity.detailsButtonClicked(position);
-            });
-            cover.setOnClickListener(view -> {
-                mainActivity.makeTransitionAnimation(title, cover, getAdapterPosition());
+                fragment.detailsButtonClicked(position);
             });
         }
     }

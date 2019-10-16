@@ -4,50 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FilmDetailsActivity">
+    tools:context=".activity.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
-
-        </com.google.android.material.appbar.AppBarLayout>
 
         <ImageView
             android:id="@+id/film_image_details"
             android:layout_width="@dimen/image_width"
             android:layout_height="@dimen/image_height"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title_details"
             android:layout_width="@dimen/text_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/standard_margin"
+            android:gravity="top"
             android:text="@string/title"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:gravity="top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/film_image_details"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
             android:id="@+id/likeCheckBox"
