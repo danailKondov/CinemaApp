@@ -75,3 +75,8 @@
 Добавьте такие элементы UI как BottomBar (BottomNavigationView) и BottomSheetDialogFragment
 
 решение: см. ветку _advanced_layout_
+
+
+## 004. Переход на единственную Activity и несколько Fragments.
+
+решение: см. ветку _migration_to_fragments_
