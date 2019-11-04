@@ -1,6 +1,5 @@
 package ru.otus.cinemaapp.adapter;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,77 +15,63 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
-import ru.otus.cinemaapp.fragments.FilmListFragment;
+import ru.otus.cinemaapp.fragments.RemarkableFilmsListFragment;
 import ru.otus.cinemaapp.model.Film;
 
-public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RemarkableFilmsAdapter extends RecyclerView.Adapter {
 
-    private List<Film> filmList;
-    private int checkedPosition;
-    private FilmListFragment fragment;
+    private List<Film> remarkableFilmsList;
+    private RemarkableFilmsListFragment fragment;
 
-    public FilmAdapter(FilmListFragment fragment, List<Film> filmList) {
-        this.fragment = fragment;
-        this.filmList = filmList;
+    public RemarkableFilmsAdapter(RemarkableFilmsListFragment remarkableFilmsListFragment, List<Film> remarkableFilmsList) {
+        this.fragment = remarkableFilmsListFragment;
+        this.remarkableFilmsList = remarkableFilmsList;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item_film, parent, false);
-        return new FilmHolder(itemView);
+        View itemView = layoutInflater.inflate(R.layout.item_remarkable_film, parent, false);
+        return new RemarkableFilmsAdapter.FilmHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Film film = filmList.get(position);
+        Film film = remarkableFilmsList.get(position);
         FilmHolder filmHolder = (FilmHolder) holder;
         filmHolder.title.setText(film.getTitle());
         filmHolder.cover.setImageDrawable(ContextCompat.getDrawable(fragment.getContext(), film.getImageResourceId()));
-        if (position == checkedPosition) {
-            filmHolder.button.setTextColor(Color.CYAN);
-        } else {
-            filmHolder.button.setTextColor(Color.BLACK);
-        }
-
-        int drawableId;
-        if (film.isRemarkable()) {
-            drawableId = R.drawable.ic_star_border_red_24dp;
-        } else {
-            drawableId = R.drawable.ic_star_border_true_black_24dp;
-        }
-        filmHolder.star.setImageDrawable(ContextCompat.getDrawable(fragment.getContext(), drawableId));
     }
 
     @Override
     public int getItemCount() {
-        return filmList.size();
+        return remarkableFilmsList.size();
     }
 
-    public void setCheckedPosition(int checkedPosition) {
-        this.checkedPosition = checkedPosition;
+    public void setRemarkableFilmsList(List<Film> remarkableFilmsList) {
+        this.remarkableFilmsList = remarkableFilmsList;
     }
 
-    public class FilmHolder extends RecyclerView.ViewHolder {
+    class FilmHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title_view) TextView title;
         @BindView(R.id.film_image) ImageView cover;
-        @BindView(R.id.remarkable_film_star) ImageView star;
         @BindView(R.id.details_button) Button button;
+        @BindView(R.id.remove_remarkable_button) Button removeButton;
 
         public FilmHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnLongClickListener(v -> {
-                int position = getAdapterPosition();
-                fragment.filmItemLongClicked(position);
-                return true;
-            });
 
             button.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 fragment.detailsButtonClicked(position);
+            });
+
+            removeButton.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                fragment.removeRemarkableClicked(position);
             });
         }
     }

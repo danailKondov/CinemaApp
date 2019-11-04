@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.model.Film;
@@ -67,5 +68,13 @@ public class FilmRepository implements FilmRepositoryInt {
     public void saveFilm(Film film) {
         Objects.nonNull(film);
         films.add(film);
+    }
+
+    @Override
+    public List<Film> getRemarkableFilmsList() {
+        return films
+                .stream()
+                .filter(Film::isRemarkable)
+                .collect(Collectors.toList());
     }
 }

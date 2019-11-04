@@ -49,18 +49,15 @@
             app:layout_constraintStart_toEndOf="@+id/film_image"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/remarkable_film_star"
-            android:layout_width="42dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="@string/remarkableFilm"
-            app:layout_constraintBottom_toTopOf="@+id/details_button"
-            app:layout_constraintStart_toEndOf="@+id/film_image"
-            app:layout_constraintTop_toBottomOf="@+id/title_view"
-            app:srcCompat="@drawable/ic_actor_black_24dp" />
+        <Button
+            android:id="@+id/remove_remarkable_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginBottom="@dimen/standard_margin"
+            android:text="@string/remove_remarkable_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/details_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
