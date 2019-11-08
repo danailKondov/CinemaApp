@@ -12,4 +12,6 @@ public interface FilmRepositoryInt {
     List<Film> getFilmList();
 
     void saveFilm(Film film);
+
+    List<Film> getRemarkableFilmsList();
 }

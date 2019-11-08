@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -30,6 +31,7 @@ import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.fragments.AddFilmFragment;
 import ru.otus.cinemaapp.fragments.FilmDetailsFragment;
 import ru.otus.cinemaapp.fragments.FilmListFragment;
+import ru.otus.cinemaapp.fragments.RemarkableFilmsListFragment;
 import ru.otus.cinemaapp.model.Film;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
     private FilmRepositoryInt repository = FilmRepository.getInstance();
 
     @BindView(R.id.main_coordinator_layout) CoordinatorLayout coordLayout;
+    @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.navigationView) NavigationView navigationView;
 
     @Override
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -72,13 +74,15 @@ public class MainActivity extends AppCompatActivity implements
         FilmListFragment filmListFragment = (FilmListFragment) getSupportFragmentManager()
                 .findFragmentByTag(FilmListFragment.TAG);
         if (filmListFragment == null) {
-            filmListFragment = FilmListFragment.newInstance(position);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, FilmListFragment.newInstance(position), FilmListFragment.TAG)
+                    .addToBackStack(FilmListFragment.TAG)
+                    .commit();
+        } else {
+            getSupportFragmentManager().popBackStack(FilmListFragment.TAG, 0);
         }
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, filmListFragment, FilmListFragment.TAG)
-                .addToBackStack(FilmListFragment.TAG)
-                .commit();
+
     }
 
     private void inviteFriend() {
@@ -125,8 +129,34 @@ public class MainActivity extends AppCompatActivity implements
             case (R.id.drawer_exit):
                 showExitDialog();
                 return true;
+            case (R.id.remarkableFilms):
+                attachRemarkableFilmsListFragment();
+                closeDrawer();
+                return true;
+            case (R.id.mainDisplay):
+                attachFilmListFragment(-1);
+                closeDrawer();
+                return true;
         }
         return true;
+    }
+
+    private void attachRemarkableFilmsListFragment() {
+        closeCollapsingToolbar();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, new RemarkableFilmsListFragment(), RemarkableFilmsListFragment.TAG)
+                .addToBackStack(RemarkableFilmsListFragment.TAG)
+                .commit();
+    }
+
+    private void closeDrawer() {
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void closeCollapsingToolbar() {
+        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
+        appBarLayout.setExpanded(false);
     }
 
     @Override
@@ -138,6 +168,9 @@ public class MainActivity extends AppCompatActivity implements
         } else if (fragment instanceof AddFilmFragment) {
             AddFilmFragment addFilmFragment = (AddFilmFragment) fragment;
             addFilmFragment.setListener(this);
+        } else if (fragment instanceof RemarkableFilmsListFragment) {
+            RemarkableFilmsListFragment remarkableFilmsListFragment = (RemarkableFilmsListFragment) fragment;
+            remarkableFilmsListFragment.setDetailsButtonClickListener(this);
         }
     }
 
@@ -146,14 +179,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onDetailsButtonClicked(int position) {
-        Film film = repository.getFilmList().get(position);
+    public void onDetailsButtonClicked(int position, boolean isRemarkable) {
+        Film film;
+        if (isRemarkable) {
+            film = repository.getRemarkableFilmsList().get(position);
+        } else {
+            film = repository.getFilmList().get(position);
+        }
         attachFilmDetailsFragment(film.getId(), position);
     }
 
     private void attachFilmDetailsFragment(Long filmId, int position) {
-        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
-        appBarLayout.setExpanded(false);
+        closeCollapsingToolbar();
 
         getSupportFragmentManager()
                 .beginTransaction()

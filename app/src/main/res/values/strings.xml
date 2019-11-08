@@ -32,4 +32,9 @@
     <string name="actor">Актер</string>
     <string name="add_to_prefs">Film added to preferences</string>
     <string name="not_add_to_prefs">Film not added to preferences</string>
+    <string name="remarkableFilm">Is film remarkable</string>
+    <string name="film_set_remarkable">Фильм добавлен в Избранное</string>
+    <string name="film_set_not_remarkable">Фильм удален из Избранного</string>
+    <string name="remarkable_films">Избранное</string>
+    <string name="remove_remarkable_text">Удалить</string>
 </resources>

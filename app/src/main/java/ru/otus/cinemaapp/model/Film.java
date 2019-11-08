@@ -9,6 +9,7 @@ public class Film {
     private String description;
     private int imageResourceId;
     private boolean isLiked;
+    private boolean isRemarkable;
 
     public Film(Long id, String title, String description, int imageResourceId) {
         this.id = id;
@@ -59,5 +60,21 @@ public class Film {
 
     public void setLiked(boolean liked) {
         isLiked = liked;
+    }
+
+    public static long getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(long counter) {
+        Film.counter = counter;
+    }
+
+    public boolean isRemarkable() {
+        return isRemarkable;
+    }
+
+    public void setRemarkable(boolean remarkable) {
+        isRemarkable = remarkable;
     }
 }

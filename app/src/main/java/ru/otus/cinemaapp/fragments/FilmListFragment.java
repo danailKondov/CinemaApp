@@ -1,7 +1,6 @@
 package ru.otus.cinemaapp.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.adapter.FilmAdapter;
+import ru.otus.cinemaapp.model.Film;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
 
@@ -100,7 +101,7 @@ public class FilmListFragment extends Fragment {
     public void detailsButtonClicked(int position) {
         checkedPosition = position;
         changeDetailButtonTextColor();
-        detailsButtonClickListener.onDetailsButtonClicked(position);
+        detailsButtonClickListener.onDetailsButtonClicked(position, false);
     }
 
     public void setDetailsButtonClickListener(OnDetailsButtonClickListener detailsButtonClickListener) {
@@ -120,8 +121,25 @@ public class FilmListFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    public void filmItemLongClicked(int position) {
+        Film film = repository.getFilmList().get(position);
+        if (film.isRemarkable()) {
+            film.setRemarkable(false);
+        } else {
+            film.setRemarkable(true);
+        }
+        adapter.notifyDataSetChanged();
+        Snackbar
+                .make(
+                        getView(),
+                        film.isRemarkable() ? getString(R.string.film_set_remarkable) : getString(R.string.film_set_not_remarkable),
+                        Snackbar.LENGTH_LONG
+                )
+                .show();
+    }
+
     public interface OnDetailsButtonClickListener {
-        void onDetailsButtonClicked(int position);
+        void onDetailsButtonClicked(int position, boolean isRemarkable);
     }
 
     public interface OnInviteFriendClickListener {
