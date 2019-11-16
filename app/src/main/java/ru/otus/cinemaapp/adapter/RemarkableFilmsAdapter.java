@@ -7,23 +7,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.fragments.RemarkableFilmsListFragment;
-import ru.otus.cinemaapp.model.Film;
+import ru.otus.cinemaapp.model.Movie;
 
 public class RemarkableFilmsAdapter extends RecyclerView.Adapter {
 
-    private List<Film> remarkableFilmsList;
+    private static final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
+    private List<Movie> remarkableFilmsList;
     private RemarkableFilmsListFragment fragment;
 
-    public RemarkableFilmsAdapter(RemarkableFilmsListFragment remarkableFilmsListFragment, List<Film> remarkableFilmsList) {
+    public RemarkableFilmsAdapter(RemarkableFilmsListFragment remarkableFilmsListFragment, List<Movie> remarkableFilmsList) {
         this.fragment = remarkableFilmsListFragment;
         this.remarkableFilmsList = remarkableFilmsList;
     }
@@ -38,10 +40,16 @@ public class RemarkableFilmsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Film film = remarkableFilmsList.get(position);
+        Movie movie = remarkableFilmsList.get(position);
         FilmHolder filmHolder = (FilmHolder) holder;
-        filmHolder.title.setText(film.getTitle());
-        filmHolder.cover.setImageDrawable(ContextCompat.getDrawable(fragment.getContext(), film.getImageResourceId()));
+        filmHolder.title.setText(movie.title);
+
+        Glide.with(holder.itemView.getContext())
+                .load(POSTER_BASE_URL + movie.posterPath)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_block_black_24dp)
+                .into(filmHolder.cover);
     }
 
     @Override
@@ -49,7 +57,7 @@ public class RemarkableFilmsAdapter extends RecyclerView.Adapter {
         return remarkableFilmsList.size();
     }
 
-    public void setRemarkableFilmsList(List<Film> remarkableFilmsList) {
+    public void setRemarkableFilmsList(List<Movie> remarkableFilmsList) {
         this.remarkableFilmsList = remarkableFilmsList;
     }
 

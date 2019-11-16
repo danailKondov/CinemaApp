@@ -1,17 +1,25 @@
 package ru.otus.cinemaapp.repo;
 
+import android.app.Activity;
+
 import java.util.List;
 import java.util.Optional;
 
-import ru.otus.cinemaapp.model.Film;
+import ru.otus.cinemaapp.model.Movie;
 
 public interface FilmRepositoryInt {
 
-    Optional<Film> getFilmById(Long id);
+    Optional<Movie> getFilmById(Integer id);
 
-    List<Film> getFilmList();
+    List<Integer> getRemarkableFilmsIdsList();
 
-    void saveFilm(Film film);
+    void setRemarkableFilmsIds(List<Integer> remarkableFilmsIds);
 
-    List<Film> getRemarkableFilmsList();
+    List<Movie> getMovieList();
+
+    List<Movie> getRemarkableMovies();
+
+    void setRemarkableMovies(List<Movie> remarkableMovies);
+
+    void setActivity(Activity activity);
 }

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -17,17 +19,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.fragments.FilmListFragment;
-import ru.otus.cinemaapp.model.Film;
+import ru.otus.cinemaapp.model.Movie;
 
 public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Film> filmList;
+    private static final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
+    private List<Movie> filmList;
     private int checkedPosition;
     private FilmListFragment fragment;
+    private List<Integer> remarkableFilmsIdsList;
 
-    public FilmAdapter(FilmListFragment fragment, List<Film> filmList) {
+    public FilmAdapter(FilmListFragment fragment, List<Movie> filmList, List<Integer> remarkableFilmsIdsList) {
         this.fragment = fragment;
         this.filmList = filmList;
+        this.remarkableFilmsIdsList = remarkableFilmsIdsList;
     }
 
     @NonNull
@@ -40,23 +45,31 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Film film = filmList.get(position);
+        Movie movie = filmList.get(position);
         FilmHolder filmHolder = (FilmHolder) holder;
-        filmHolder.title.setText(film.getTitle());
-        filmHolder.cover.setImageDrawable(ContextCompat.getDrawable(fragment.getContext(), film.getImageResourceId()));
-        if (position == checkedPosition) {
-            filmHolder.button.setTextColor(Color.CYAN);
-        } else {
-            filmHolder.button.setTextColor(Color.BLACK);
-        }
+        filmHolder.title.setText(movie.title);
 
-        int drawableId;
-        if (film.isRemarkable()) {
+        Glide.with(holder.itemView.getContext())
+                .load(POSTER_BASE_URL + movie.posterPath)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_block_black_24dp)
+                .into(filmHolder.cover);
+
+        int drawableId = 0;
+        if (remarkableFilmsIdsList.contains(movie.id)) {
             drawableId = R.drawable.ic_star_border_red_24dp;
         } else {
             drawableId = R.drawable.ic_star_border_true_black_24dp;
         }
         filmHolder.star.setImageDrawable(ContextCompat.getDrawable(fragment.getContext(), drawableId));
+
+
+        if (position == checkedPosition) {
+            filmHolder.button.setTextColor(Color.CYAN);
+        } else {
+            filmHolder.button.setTextColor(Color.BLACK);
+        }
     }
 
     @Override
@@ -66,6 +79,10 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setCheckedPosition(int checkedPosition) {
         this.checkedPosition = checkedPosition;
+    }
+
+    public void setRemarkableFilmsIdsList(List<Integer> remarkableFilmsIdsList) {
+        this.remarkableFilmsIdsList = remarkableFilmsIdsList;
     }
 
     public class FilmHolder extends RecyclerView.ViewHolder {

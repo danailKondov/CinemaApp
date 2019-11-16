@@ -19,6 +19,11 @@
             android:title="@string/remarkable_films" />
 
         <item
+            android:id="@+id/cinemaMap"
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="@string/cinema_map" />
+
+        <item
             android:id="@+id/drawer_exit"
             android:icon="@drawable/ic_close_black_24dp"
             android:title="@string/drawer_exit"/>

@@ -15,11 +15,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.otus.cinemaapp.R;
-import ru.otus.cinemaapp.model.Film;
+import ru.otus.cinemaapp.model.Movie;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
 
@@ -36,13 +41,16 @@ public class FilmDetailsFragment extends Fragment {
     public static final String TAG = "filmDetailsFragment";
     private static final String FILM_ID = "filmId";
     private static final String POSITION = "position";
+    private static final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-    private long filmId;
+    private Integer filmId;
     private int position;
 
     @BindView(R.id.likeCheckBox) CheckBox likeCheckBox;
     @BindView(R.id.commentTextInput) EditText comment;
     @BindView(R.id.film_image_details) ImageView cover;
+    @BindView(R.id.film_description) TextView filmDescription;
+    @BindView(R.id.title_details) TextView filmTitle;
 
     private FilmRepositoryInt repository = FilmRepository.getInstance();
 
@@ -58,10 +66,10 @@ public class FilmDetailsFragment extends Fragment {
      * @param position adapter position
      * @return A new instance of fragment FilmDetailsFragment.
      */
-    public static FilmDetailsFragment newInstance(Long filmId, int position) {
+    public static FilmDetailsFragment newInstance(Integer filmId, int position) {
         FilmDetailsFragment fragment = new FilmDetailsFragment();
         Bundle args = new Bundle();
-        args.putLong(FILM_ID, filmId);
+        args.putInt(FILM_ID, filmId);
         args.putInt(POSITION, position);
         fragment.setArguments(args);
         return fragment;
@@ -71,7 +79,7 @@ public class FilmDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            filmId = getArguments().getLong(FILM_ID);
+            filmId = getArguments().getInt(FILM_ID);
             position = getArguments().getInt(POSITION);
         }
     }
@@ -88,19 +96,36 @@ public class FilmDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Film film = repository.getFilmById(filmId)
-                .orElseGet(() -> new Film(-1L, "title", "No such film", 0));
-        likeCheckBox.setChecked(film.isLiked());
-        cover.setImageDrawable(ContextCompat.getDrawable(getContext(), film.getImageResourceId()));
+        Movie movie = repository.getFilmById(filmId)
+                .orElseGet(Movie::new);
+
+        filmDescription.setText(movie.overview);
+        filmTitle.setText(movie.title);
+        likeCheckBox.setChecked(repository.getRemarkableFilmsIdsList().contains(movie.id));
+
+        Glide.with(view.getContext())
+                .load(POSTER_BASE_URL + movie.posterPath)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_block_black_24dp)
+                .into(cover);
 
         Button button = view.findViewById(R.id.saveCommentButton);
         button.setOnClickListener(v -> {
-            film.setLiked(likeCheckBox.isChecked());
-            onSaveCommentButtonPressed(likeCheckBox.isChecked(), comment.getText().toString(), filmId, position);
+            onSaveCommentButtonPressed(likeCheckBox.isChecked(), comment.getText().toString(), movie);
         });
     }
 
-    public void onSaveCommentButtonPressed(boolean isChecked, String commentText, long filmId, int position) {
+    private void onSaveCommentButtonPressed(boolean isChecked, String commentText, Movie movie) {
+
+        List<Integer> remarkableFilmsIdsList = repository.getRemarkableFilmsIdsList();
+        if (isChecked && !remarkableFilmsIdsList.contains(movie.id)) {
+            remarkableFilmsIdsList.add(movie.id);
+        } else if (!isChecked) {
+            remarkableFilmsIdsList.remove(movie.id);
+        }
+        repository.setRemarkableFilmsIds(remarkableFilmsIdsList);
+
         if (saveCommentButtonListener != null) {
             saveCommentButtonListener.onSaveCommentButtonPressed(isChecked, commentText, filmId, position);
         }
