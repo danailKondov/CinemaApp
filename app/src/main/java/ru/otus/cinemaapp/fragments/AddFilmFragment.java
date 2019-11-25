@@ -17,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.otus.cinemaapp.R;
-import ru.otus.cinemaapp.model.Film;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
 
@@ -43,15 +42,9 @@ public class AddFilmFragment extends Fragment {
 
     @OnClick(R.id.saveFilmButton)
     void onSaveFilmButtonClick(Button button) {
-        repository.saveFilm(new Film(
-                Film.generateId(),
-                title.getText().toString(),
-                description.getText().toString(),
-                R.drawable.matrix)
-        );
-
         hideKeyboard(button);
         listener.onFilmAdded();
+        throw new UnsupportedOperationException();
     }
 
     private void hideKeyboard(Button button) {

@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,11 +27,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.otus.cinemaapp.R;
+import ru.otus.cinemaapp.fragments.AboutInfoFragment;
 import ru.otus.cinemaapp.fragments.AddFilmFragment;
 import ru.otus.cinemaapp.fragments.FilmDetailsFragment;
 import ru.otus.cinemaapp.fragments.FilmListFragment;
 import ru.otus.cinemaapp.fragments.RemarkableFilmsListFragment;
-import ru.otus.cinemaapp.model.Film;
+import ru.otus.cinemaapp.model.Movie;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
 
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        repository.setActivity(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             getSupportFragmentManager().popBackStack(FilmListFragment.TAG, 0);
         }
-
     }
 
     private void inviteFriend() {
@@ -137,8 +137,30 @@ public class MainActivity extends AppCompatActivity implements
                 attachFilmListFragment(-1);
                 closeDrawer();
                 return true;
+            case (R.id.aboutApp):
+                attachAboutInfoFragment();
+                closeDrawer();
+                return true;
+            case (R.id.cinemaMap):
+                openMapActivity();
+                closeDrawer();
+                return true;
         }
         return true;
+    }
+
+    private void openMapActivity() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
+
+    private void attachAboutInfoFragment() {
+        closeCollapsingToolbar();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, new AboutInfoFragment(), AboutInfoFragment.TAG)
+                .addToBackStack(AboutInfoFragment.TAG)
+                .commit();
     }
 
     private void attachRemarkableFilmsListFragment() {
@@ -156,7 +178,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private void closeCollapsingToolbar() {
         AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
-        appBarLayout.setExpanded(false);
+        if (appBarLayout.isEnabled()) {
+            appBarLayout.setExpanded(false);
+        }
     }
 
     @Override
@@ -180,16 +204,16 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onDetailsButtonClicked(int position, boolean isRemarkable) {
-        Film film;
+        Movie movie = null;
         if (isRemarkable) {
-            film = repository.getRemarkableFilmsList().get(position);
+            movie = repository.getRemarkableMovies().get(position);
         } else {
-            film = repository.getFilmList().get(position);
+            movie = repository.getMovieList().get(position);
         }
-        attachFilmDetailsFragment(film.getId(), position);
+        attachFilmDetailsFragment(movie.id, position);
     }
 
-    private void attachFilmDetailsFragment(Long filmId, int position) {
+    private void attachFilmDetailsFragment(Integer filmId, int position) {
         closeCollapsingToolbar();
 
         getSupportFragmentManager()
@@ -208,10 +232,6 @@ public class MainActivity extends AppCompatActivity implements
                         isChecked ? getString(R.string.add_to_prefs) : getString(R.string.not_add_to_prefs),
                         Snackbar.LENGTH_LONG
                 )
-                    .setAction(getString(R.string.snackbar_back), view ->
-                            getSupportFragmentManager().popBackStack()
-                    )
-                .setActionTextColor(Color.CYAN)
                 .show();
         Log.i("activityResult", "liked: " + isChecked + "; comment: " + commentText);
     }

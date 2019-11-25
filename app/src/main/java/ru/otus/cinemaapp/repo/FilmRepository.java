@@ -1,47 +1,34 @@
 package ru.otus.cinemaapp.repo;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import ru.otus.cinemaapp.R;
-import ru.otus.cinemaapp.model.Film;
+import ru.otus.cinemaapp.model.Movie;
 
 public class FilmRepository implements FilmRepositoryInt {
 
-    private List<Film> films = new ArrayList<>();
+    private static final String SHARED_REMARKABLE_FILMS_IDS = "sharedRemarkableFilmsIds";
+
+    private List<Integer> remarkableFilmsIds;
+
+    private List<Movie> movies = new ArrayList<>();
+
+    private List<Movie> remarkableMovies = Collections.synchronizedList(new ArrayList<>());
+
+    private Activity activity;
 
     private static FilmRepository instance;
 
     private FilmRepository() {
-        films.add(new Film(
-                Film.generateId(),
-                "Однажды в голливуде",
-                "Фильм повествует о череде событий, произошедших в Голливуде в 1969 году, " +
-                        "на закате его «золотого века». Известный актер Рик Далтон и его дублер " +
-                        "Клифф Бут пытаются найти свое место в стремительно меняющемся мире " +
-                        "киноиндустрии.",
-                R.drawable.hollywood));
-        films.add(new Film(
-                Film.generateId(),
-                "Интерстеллар",
-                "Когда засуха приводит человечество к продовольственному кризису, " +
-                        "коллектив исследователей и учёных отправляется сквозь червоточину " +
-                        "(которая предположительно соединяет области пространства-времени через " +
-                        "большое расстояние) в путешествие, чтобы превзойти прежние ограничения " +
-                        "для космических путешествий человека и переселить человечество " +
-                        "на другую планету.",
-                R.drawable.interstellar));
-        films.add(new Film(
-                Film.generateId(),
-                "Щегол",
-                "История юного Теодора Деккера, потерявшего мать во время теракта в " +
-                        "Метрополитен-музее. Чудом оставшись в живых после взрыва, Тео получает от " +
-                        "умирающего старика редкую картину кисти Карела Фабрициуса и кольцо. " +
-                        "С этого момента начинается его погружение в подпольный мир искусства.",
-                R.drawable.goldfinch));
     }
 
     public static FilmRepository getInstance() {
@@ -52,29 +39,55 @@ public class FilmRepository implements FilmRepositoryInt {
     }
 
     @Override
-    public Optional<Film> getFilmById(Long id) {
-        return films
+    public Optional<Movie> getFilmById(Integer id) {
+        return movies
                 .stream()
-                .filter(x -> x.getId().equals(id))
+                .filter(x -> x.id.equals(id))
                 .findFirst();
     }
 
     @Override
-    public List<Film> getFilmList() {
-        return films;
+    public List<Integer> getRemarkableFilmsIdsList() {
+        if (remarkableFilmsIds == null) {
+            // получаем из SharedPreferences
+            SharedPreferences sharedPreferences = activity.getPreferences(Context.MODE_PRIVATE);
+            Set<String> remarkableFilmsIdsString = sharedPreferences.getStringSet(SHARED_REMARKABLE_FILMS_IDS, new HashSet<>());
+            remarkableFilmsIds = remarkableFilmsIdsString.stream().map(Integer::valueOf).collect(Collectors.toList());
+        }
+        return remarkableFilmsIds;
     }
 
     @Override
-    public void saveFilm(Film film) {
-        Objects.nonNull(film);
-        films.add(film);
-    }
-
-    @Override
-    public List<Film> getRemarkableFilmsList() {
-        return films
+    public void setRemarkableFilmsIds(List<Integer> remarkableFilmsIds) {
+        // сохраняем в SharedPreferences
+        SharedPreferences sharedPreferences = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Set<String> remarkableFilmsIdsString = remarkableFilmsIds
                 .stream()
-                .filter(Film::isRemarkable)
-                .collect(Collectors.toList());
+                .map(Object::toString)
+                .collect(Collectors.toSet());
+        editor.putStringSet(SHARED_REMARKABLE_FILMS_IDS, remarkableFilmsIdsString);
+        editor.apply();
+        this.remarkableFilmsIds = remarkableFilmsIds;
+    }
+
+    @Override
+    public List<Movie> getMovieList() {
+        return movies;
+    }
+
+    @Override
+    public List<Movie> getRemarkableMovies() {
+        return remarkableMovies;
+    }
+
+    @Override
+    public void setRemarkableMovies(List<Movie> remarkableMovies) {
+        this.remarkableMovies = remarkableMovies;
+    }
+
+    @Override
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 }

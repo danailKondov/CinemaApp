@@ -37,4 +37,10 @@
     <string name="film_set_not_remarkable">Фильм удален из Избранного</string>
     <string name="remarkable_films">Избранное</string>
     <string name="remove_remarkable_text">Удалить</string>
+    <string name="about_info">Мобильное приложение о фильмах. Для некоммерческого использования.</string>
+    <string name="author_info">Автор: Д.Кондов (dkondov@yandex.ru)</string>
+    <string name="db_logo">movie db logo</string>
+    <string name="db_movie_notice">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="cinema_map">Ближайшие кинотеатры</string>
 </resources>
