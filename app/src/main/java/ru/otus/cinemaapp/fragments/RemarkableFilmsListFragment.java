@@ -82,7 +82,7 @@ public class RemarkableFilmsListFragment extends Fragment {
         for (Integer id : remarkableMoviesIdsToDownload) {
 
             // потом проверяем уже загруженные фильмы
-            Optional<Movie> optionalMovie = repository.getMovieList()
+            Optional<Movie> optionalMovie = repository.getMovies()
                     .stream()
                     .filter(movie -> id.equals(movie.id))
                     .findFirst();
