@@ -43,4 +43,8 @@
     <string name="db_movie_notice">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
     <string name="title_activity_maps">Map</string>
     <string name="cinema_map">Ближайшие кинотеатры</string>
+    <string name="channel_name">Cinema channel</string>
+    <string name="channel_description">About popular cinema</string>
+    <string name="notification_title">Cinema app</string>
+    <string name="notification_text">Список фильмов обновлен</string>
 </resources>

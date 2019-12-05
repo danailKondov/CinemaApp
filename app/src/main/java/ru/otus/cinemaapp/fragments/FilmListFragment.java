@@ -1,39 +1,38 @@
 package ru.otus.cinemaapp.fragments;
 
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.otus.cinemaapp.App;
 import ru.otus.cinemaapp.R;
 import ru.otus.cinemaapp.adapter.FilmAdapter;
 import ru.otus.cinemaapp.model.Movie;
-import ru.otus.cinemaapp.model.PopularMoviesQueryResult;
 import ru.otus.cinemaapp.repo.FilmRepository;
 import ru.otus.cinemaapp.repo.FilmRepositoryInt;
 
 
-public class FilmListFragment extends Fragment {
+public class FilmListFragment extends Fragment implements Observer<List<Movie>> {
 
     public static final String CHECKED_POSITION = "checkedPosition";
     public static final String TAG = "FilmListFragment";
@@ -83,11 +82,15 @@ public class FilmListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-            adapter = new FilmAdapter(this, repository.getMovieList(), repository.getRemarkableFilmsIdsList());
+            repository.getMoviesFromDB().observe(getActivity(), this);
+            adapter = new FilmAdapter(this, new ArrayList<>(), repository.getRemarkableFilmsIdsList());
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            getMoviesFromServer();
+            if (isFirstStartToday()) {
+                updateAllMoviesInDB();
+                setNewFirstStartDate();
+            }
 
             FloatingActionButton actionButton = view.findViewById(R.id.contactFriendFab);
             actionButton.setOnClickListener(v -> inviteFriend());
@@ -98,28 +101,19 @@ public class FilmListFragment extends Fragment {
             changeDetailButtonTextColor();
     }
 
-    private void getMoviesFromServer() {
-        App.getInstance().service.getMovies().enqueue(new Callback<PopularMoviesQueryResult>() {
-            @Override
-            public void onResponse(Call<PopularMoviesQueryResult> call, Response<PopularMoviesQueryResult> response) {
-                if (response.isSuccessful()) {
+    private void updateAllMoviesInDB() {
+        repository.updateAllMovies();
+    }
 
-                    PopularMoviesQueryResult result = response.body();
-                    if (result != null) {
-                        List<Movie> movies = result.results;
-                        repository.getMovieList().addAll(movies);
-                        adapter.notifyDataSetChanged();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_LONG).show();
-                }
-            }
+    private void setNewFirstStartDate() {
+        repository.setFirstStartDate(LocalDate.now());
+    }
 
-            @Override
-            public void onFailure(Call<PopularMoviesQueryResult> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isFirstStartToday() {
+        LocalDate localDateNow = LocalDate.now();
+        LocalDate firstStartDate = repository.getFirstStartDate();
+        return !firstStartDate.isEqual(localDateNow);
     }
 
     @Override
@@ -161,7 +155,7 @@ public class FilmListFragment extends Fragment {
      * @param position позиция фильма
      */
     public void filmItemLongClicked(int position) {
-        Movie movie = repository.getMovieList().get(position);
+        Movie movie = repository.getMovies().get(position);
         List<Integer> remarkableFilmsIdsList = repository.getRemarkableFilmsIdsList();
         boolean isRemarkable = false;
         if (remarkableFilmsIdsList.contains(movie.id)) {
@@ -180,6 +174,13 @@ public class FilmListFragment extends Fragment {
                         Snackbar.LENGTH_LONG
                 )
                 .show();
+    }
+
+    @Override
+    public void onChanged(List<Movie> movies) {
+        repository.setMovies(movies);
+        adapter.setMovies(movies);
+        adapter.notifyDataSetChanged();
     }
 
     public interface OnDetailsButtonClickListener {

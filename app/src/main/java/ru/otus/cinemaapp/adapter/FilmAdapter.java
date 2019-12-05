@@ -85,6 +85,10 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.remarkableFilmsIdsList = remarkableFilmsIdsList;
     }
 
+    public void setMovies(List<Movie> movies) {
+        filmList = movies;
+    }
+
     public class FilmHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title_view) TextView title;

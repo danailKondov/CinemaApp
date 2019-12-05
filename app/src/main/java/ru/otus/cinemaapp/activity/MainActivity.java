@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         repository.setActivity(this);
+        repository.initDB();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements
         if (isRemarkable) {
             movie = repository.getRemarkableMovies().get(position);
         } else {
-            movie = repository.getMovieList().get(position);
+            movie = repository.getMovies().get(position);
         }
         attachFilmDetailsFragment(movie.id, position);
     }
