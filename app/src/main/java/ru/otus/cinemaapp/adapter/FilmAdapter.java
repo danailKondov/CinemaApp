@@ -101,7 +101,7 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ButterKnife.bind(this, itemView);
             itemView.setOnLongClickListener(v -> {
                 int position = getAdapterPosition();
-                fragment.filmItemLongClicked(position);
+                fragment.addFilmToRemarkableList(position);
                 return true;
             });
 
